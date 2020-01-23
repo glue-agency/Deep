@@ -89,4 +89,21 @@ class Field extends AbstractField
 
         return $settings;
     }
+
+    public function getFieldTypeAttribute($value){
+
+        $fieldType = $value;
+
+        if($value === 'zoo_plus'){
+
+            $settings = $this->getSettings();
+
+            if($settings['plus_relation_direction'] === 'reverse'){
+
+                $fieldType = 'zoo_plus_reverse';
+            }
+        }
+
+        return $fieldType;
+    }
 }

@@ -29,6 +29,8 @@ use rsanchez\Deep\Model\MatrixCol;
 use rsanchez\Deep\Model\MatrixRow;
 use rsanchez\Deep\Model\PlayaEntry;
 use rsanchez\Deep\Model\RelationshipEntry;
+use rsanchez\Deep\Model\ZooPlusEntry;
+use rsanchez\Deep\Model\ZooPlusReverseEntry;
 use rsanchez\Deep\Repository\FieldRepository;
 use rsanchez\Deep\Repository\ChannelRepository;
 use rsanchez\Deep\Repository\SiteRepository;
@@ -85,7 +87,8 @@ class Container extends IlluminateContainer
         $this->alias('Symfony\Component\Translation\TranslatorInterface', 'ValidationTranslator');
 
         $this->singleton('Illuminate\Validation\Factory', function ($app) {
-            $validatorFactory = new ValidatorFactory($app->make('ValidationTranslator'));
+
+            $validatorFactory = new ValidatorFactory(app('translator'));
 
             $validatorFactory->setPresenceVerifier($app->make('ValidationPresenceVerifier'));
 
@@ -271,6 +274,26 @@ class Container extends IlluminateContainer
 
         $this->alias('rsanchez\Deep\Model\PlayaEntry', 'PlayaEntry');
 
+        $this->singleton('rsanchez\Deep\Model\ZooPlusEntry', function ($app) {
+            $model = new ZooPlusEntry();
+
+            $model->setValidatorFactory($app->make('ValidatorFactory'));
+
+            return $model;
+        });
+
+        $this->alias('rsanchez\Deep\Model\ZooPlusEntry', 'ZooPlusEntry');
+
+        $this->singleton('rsanchez\Deep\Model\ZooPlusReverseEntry', function ($app) {
+            $model = new ZooPlusReverseEntry();
+
+            $model->setValidatorFactory($app->make('ValidatorFactory'));
+
+            return $model;
+        });
+
+        $this->alias('rsanchez\Deep\Model\ZooPlusReverseEntry', 'ZooPlusReverseEntry');
+
         $this->singleton('rsanchez\Deep\Model\RelationshipEntry', function ($app) {
             $model = new RelationshipEntry();
 
@@ -289,6 +312,8 @@ class Container extends IlluminateContainer
                 $app->make('Asset'),
                 $app->make('File'),
                 $app->make('PlayaEntry'),
+                $app->make('ZooPlusEntry'),
+                $app->make('ZooPlusReverseEntry'),
                 $app->make('RelationshipEntry')
             );
         });
@@ -303,6 +328,8 @@ class Container extends IlluminateContainer
                 $app->make('Asset'),
                 $app->make('File'),
                 $app->make('PlayaEntry'),
+                $app->make('ZooPlusEntry'),
+                $app->make('ZooPlusReverseEntry'),
                 $app->make('RelationshipEntry'),
                 $app->make('GridCol'),
                 $app->make('GridRow'),

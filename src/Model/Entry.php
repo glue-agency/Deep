@@ -196,6 +196,16 @@ class Entry extends AbstractEntity
         return $this->hasOne('\\rsanchez\\Deep\\Model\\Member', 'member_id', 'author_id');
     }
 
+
+    /**
+     * Define the Author Eloquent relationship
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function transcribe()
+    {
+        return $this->hasOne('\\rsanchez\\Deep\\Model\\TranscribeEntry', 'entry_id', 'entry_id');
+    }
+
     /**
      * Define the Categories Eloquent relationship
      * @return \Illuminate\Database\Eloquent\Relations\HasManyThrough
@@ -667,6 +677,15 @@ class Entry extends AbstractEntity
 
         return $query->whereHas('categories', function ($q) use ($categoryIds) {
             $q->whereIn('categories.cat_id', $categoryIds);
+        });
+    }
+
+    public function scopeTranscribeLanguageId(Builder $query, $languageId)
+    {
+        $languagedIds = is_array($languageId) ? $languageId : array_slice(func_get_args(), 1);
+
+        return $query->whereHas('transcribe', function ($q) use ($languagedIds) {
+            $q->whereIn('transcribe_entries_languages.language_id', $languagedIds);
         });
     }
 
@@ -1545,6 +1564,14 @@ class Entry extends AbstractEntity
     public function scopeWithCategories(Builder $query, Closure $callback = null)
     {
         $with = $callback ? ['categories' => $callback] : 'categories';
+
+        return $query->with($with);
+    }
+
+
+    public function scopeWithTranscribe(Builder $query, Closure $callback = null)
+    {
+        $with = $callback ? ['transcribe' => $callback] : 'transcribe';
 
         return $query->with($with);
     }

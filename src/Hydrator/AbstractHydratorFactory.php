@@ -12,6 +12,8 @@ namespace rsanchez\Deep\Hydrator;
 use rsanchez\Deep\Collection\EntryCollection;
 use rsanchez\Deep\Collection\FieldCollection;
 use rsanchez\Deep\Collection\PropertyCollection;
+use rsanchez\Deep\Model\ZooPlusEntry;
+use rsanchez\Deep\Model\ZooPlusReverseEntry;
 use rsanchez\Deep\Repository\SiteRepositoryInterface;
 use rsanchez\Deep\Repository\UploadPrefRepositoryInterface;
 use rsanchez\Deep\Model\Asset;
@@ -34,6 +36,8 @@ abstract class AbstractHydratorFactory
         'matrix'                => '\\rsanchez\\Deep\\Hydrator\\MatrixHydrator',
         'grid'                  => '\\rsanchez\\Deep\\Hydrator\\GridHydrator',
         'playa'                 => '\\rsanchez\\Deep\\Hydrator\\PlayaHydrator',
+        'zoo_plus'                 => '\\rsanchez\\Deep\\Hydrator\\ZooPlusHydrator',
+        'zoo_plus_reverse'                 => '\\rsanchez\\Deep\\Hydrator\\ZooPlusReverseHydrator',
         'relationship'          => '\\rsanchez\\Deep\\Hydrator\\RelationshipHydrator',
         'assets'                => '\\rsanchez\\Deep\\Hydrator\\AssetsHydrator',
         'file'                  => '\\rsanchez\\Deep\\Hydrator\\FileHydrator',
@@ -56,6 +60,7 @@ abstract class AbstractHydratorFactory
         'matrix'                => '\\rsanchez\\Deep\\Hydrator\\MatrixDehydrator',
         'grid'                  => '\\rsanchez\\Deep\\Hydrator\\GridDehydrator',
         'playa'                 => '\\rsanchez\\Deep\\Hydrator\\PlayaDehydrator',
+        'zoo_plus'              => '\\rsanchez\\Deep\\Hydrator\\ZooPlusDehydrator',
         'relationship'          => '\\rsanchez\\Deep\\Hydrator\\RelationshipDehydrator',
         'assets'                => '\\rsanchez\\Deep\\Hydrator\\AssetsDehydrator',
         'file'                  => '\\rsanchez\\Deep\\Hydrator\\FileDehydrator',
@@ -99,6 +104,10 @@ abstract class AbstractHydratorFactory
      */
     protected $playaEntry;
 
+    protected $zooPlusEntry;
+
+    protected $zooPlusReverseEntry;
+
     /**
      * @var \rsanchez\Deep\Model\RelationshipEntry
      */
@@ -112,6 +121,7 @@ abstract class AbstractHydratorFactory
      * @param \rsanchez\Deep\Model\Asset                              $asset
      * @param \rsanchez\Deep\Model\File                               $file
      * @param \rsanchez\Deep\Model\PlayaEntry                         $playaEntry
+     * @param \rsanchez\Deep\Model\ZooPlusEntry                       $zooPlusEntry
      * @param \rsanchez\Deep\Model\RelationshipEntry                  $relationshipEntry
      */
     public function __construct(
@@ -121,6 +131,8 @@ abstract class AbstractHydratorFactory
         Asset $asset,
         File $file,
         PlayaEntry $playaEntry,
+        ZooPlusEntry $zooPlusEntry,
+        ZooPlusReverseEntry $zooPlusReverseEntry,
         RelationshipEntry $relationshipEntry
     ) {
         $this->db = $db;
@@ -129,6 +141,8 @@ abstract class AbstractHydratorFactory
         $this->asset = $asset;
         $this->file =  $file;
         $this->playaEntry = $playaEntry;
+        $this->zooPlusEntry = $zooPlusEntry;
+        $this->zooPlusReverseEntry = $zooPlusReverseEntry;
         $this->relationshipEntry = $relationshipEntry;
     }
 
@@ -337,6 +351,30 @@ abstract class AbstractHydratorFactory
     public function newPlayaHydrator(HydratorCollection $hydrators, $type)
     {
         return new PlayaHydrator($hydrators, $type, $this->playaEntry);
+    }
+
+    /**
+     * Create a new ZooPlusHydrator object
+     *
+     * @param  \rsanchez\Deep\Hydrator\HydratorCollection $hydrators
+     * @param  string                                     $type
+     * @return \rsanchez\Deep\Hydrator\ZooPlusHydrator
+     */
+    public function newZooPlusHydrator(HydratorCollection $hydrators, $type)
+    {
+        return new ZooPlusHydrator($hydrators, $type, $this->zooPlusEntry);
+    }
+
+    /**
+     * Create a new ZooPlusReverseHydrator object
+     *
+     * @param  \rsanchez\Deep\Hydrator\HydratorCollection $hydrators
+     * @param  string                                     $type
+     * @return \rsanchez\Deep\Hydrator\ZooPlusReverseHydrator
+     */
+    public function newZooPlusReverseHydrator(HydratorCollection $hydrators, $type)
+    {
+        return new ZooPlusReverseHydrator($hydrators, $type, $this->zooPlusReverseEntry);
     }
 
     /**

@@ -40,11 +40,12 @@ class FieldRepository extends AbstractFieldRepository implements ChannelFieldRep
         if (is_null($this->collection)) {
             $this->collection = $this->model
                 ->orderByRaw("field_type IN ('matrix', 'grid') DESC")
-                ->orderByRaw("field_type IN ('playa', 'relationship') DESC")
+                ->orderByRaw("field_type IN ('playa', 'relationship','zoo_plus') DESC")
                 ->orderBy('field_order', 'asc')
                 ->get();
 
-            foreach ($this->collection as $field) {
+            foreach ($this->collection as &$field) {
+
                 if (! array_key_exists($field->group_id, $this->fieldsByGroup)) {
                     $this->fieldsByGroup[$field->group_id] = new FieldCollection();
                 }
@@ -54,6 +55,7 @@ class FieldRepository extends AbstractFieldRepository implements ChannelFieldRep
                 $this->fieldsByName[$field->field_name] = $field;
                 $this->fieldsById[$field->field_id] = $field;
             }
+
         }
     }
 

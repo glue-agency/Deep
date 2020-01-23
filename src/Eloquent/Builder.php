@@ -30,7 +30,7 @@ class Builder extends BaseBuilder
         parent::__construct($query);
         $this->model = $builder->model;
         $this->eagerLoad = $builder->eagerLoad;
-        $this->macros = $builder->macros;
+        //$this->macros = $builder->macros;
         $this->onDelete = $builder->onDelete;
         $this->passthru = $builder->passthru;
 

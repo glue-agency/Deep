@@ -10,6 +10,8 @@
 namespace rsanchez\Deep\Hydrator;
 
 use rsanchez\Deep\Collection\FieldCollection;
+use rsanchez\Deep\Model\ZooPlusEntry;
+use rsanchez\Deep\Model\ZooPlusReverseEntry;
 use rsanchez\Deep\Repository\SiteRepositoryInterface;
 use rsanchez\Deep\Repository\UploadPrefRepositoryInterface;
 use rsanchez\Deep\Model\Asset;
@@ -55,6 +57,7 @@ class EntryHydratorFactory extends AbstractHydratorFactory
      * @param \rsanchez\Deep\Model\Asset                              $asset
      * @param \rsanchez\Deep\Model\File                               $file
      * @param \rsanchez\Deep\Model\PlayaEntry                         $playaEntry
+     * @param \rsanchez\Deep\Model\ZooPlusEntry                       $zooPlusEntry
      * @param \rsanchez\Deep\Model\RelationshipEntry                  $relationshipEntry
      * @param \rsanchez\Deep\Model\GridCol                            $gridCol
      * @param \rsanchez\Deep\Model\GridRow                            $gridRow
@@ -68,6 +71,8 @@ class EntryHydratorFactory extends AbstractHydratorFactory
         Asset $asset,
         File $file,
         PlayaEntry $playaEntry,
+        ZooPlusEntry $zooPlusEntry,
+        ZooPlusReverseEntry $zooPlusReverseEntry,
         RelationshipEntry $relationshipEntry,
         GridCol $gridCol,
         GridRow $gridRow,
@@ -80,6 +85,8 @@ class EntryHydratorFactory extends AbstractHydratorFactory
             $uploadPrefRepository,
             $asset, $file,
             $playaEntry,
+            $zooPlusEntry,
+            $zooPlusReverseEntry,
             $relationshipEntry
         );
 
