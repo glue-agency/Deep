@@ -14,57 +14,23 @@ A read-only set of [Eloquent](http://laravel.com/docs/eloquent) models for Expre
 
 For more detailed information, see the [auto-generated API docs](http://rsanchez.github.io/Deep/api).
 
-```
-<?php
-
-use rsanchez\Deep\Deep;
-use rsanchez\Deep\Model\Entry;
-
-Deep::bootInstance();
-
-$entries = Entry::channel('blog')
-                ->limit(10)
-                ->showFutureEntries()
-                ->get();
-?>
-
-<?php foreach ($entries as $entry) : ?>
-<article>
-    <h1><?php echo e($entry->title); ?></h1>
-
-    <p class="date"><?php echo $entry->entry_date->format('F j, Y'); ?></p>
-
-    <?php echo $entry->description; ?>
-</article>
-<?php endforeach ?>
-```
 
 ## Installation
 
+Add the glue agency repository in your composer.json
+
+    "repositories": [
+            {
+                "type": "vcs",
+                "url": "git@github.com:glue-agency/Deep.git"
+            }
+
+
 Run this command in your terminal:
 
-    composer require rsanchez/deep
+    composer require rsanchez/deep:dev-feature/laravel6
 
 ## Setup
-
-### ExpressionEngine
-
-Make sure you load composer's autoloader at the top of your `config.php` (your actual vendor path may vary):
-
-    require_once FCPATH.'vendor/autoload.php'
-
-Then you can create your own plugin that uses Deep by [extending the `BasePlugin` class](#extending-the-baseplugin-class). Or you can use the built-in wrapper class, which bootstraps Deep with EE for you:
-
-```
-use rsanchez\Deep\Deep;
-use rsanchez\Deep\Model\Entry;
-
-Deep::bootEE();
-
-$entries = Entry::channel('blog')
-                ->limit(10)
-                ->get();
-```
 
 ### Laravel
 
@@ -94,55 +60,6 @@ If you need to use a DB connection other than Laravel's default connection, you 
         'connection' => 'your_connection_name',
     ),
 
-The specified connection will be used for all of Deep's models.
-
-### Generic PHP (or other framework)
-
-First you must bootstrap Eloquent for use outside of Laravel. There are [many](https://laracasts.com/lessons/how-to-use-eloquent-outside-of-laravel) [guides](http://www.slimframework.com/news/slim-and-laravel-eloquent-orm) [out](http://www.edzynda.com/use-laravels-eloquent-orm-outside-of-laravel/) [there](http://jenssegers.be/blog/53/using-eloquent-without-laravel) on how to do this.
-
-Then you can simply use the generic wrapper:
-
-```
-use rsanchez\Deep\Deep;
-use rsanchez\Deep\Model\Entry;
-
-Deep::bootInstance();
-
-$entries = Entry::channel('blog')
-                ->limit(10)
-                ->get();
-```
-
-Or instantiate your own instance of the Deep DI container if you prefer:
-
-```
-use rsanchez\Deep\Deep;
-
-$deep = new Deep();
-
-$entries = $deep->make('Entry')
-                ->channel('blog')
-                ->limit(10)
-                ->get();
-```
-
-
-### Using the Phar archive for easier distribution
-
-You can build a Phar archive as an alternative installation method. The best way to package Deep with your custom distributed add-on is to use the Phar archive, since EE doesn't natively support compser installation out of the box.
-
-To build the Phar archive, you must have [box](http://box-project.org/) installed. Then you can clone this repo, run `composer install` to fetch all the dependencies, and run `box build` to create the Phar archive. The archive can be found in `build/deep.phar` after it's built.
-
-Now you can package that single Phar archive with your add-on (say, in a `phar` folder in your add-on root) and load it like so:
-
-```
-// this is a courtesy check in case other add-ons are also
-// using deep.phar
-if ( ! class_exists('\\rsanchez\\Deep\\Deep'))
-{
-    require_once PATH_THIRD.'your_addon/phar/deep.phar';
-}
-```
 
 ## Query Scopes
 
